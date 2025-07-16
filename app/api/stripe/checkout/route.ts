@@ -86,6 +86,7 @@ export async function GET(request: NextRequest) {
       throw new Error('User is not associated with any team.');
     }
 
+    // Update user subscription data
     await db
       .update(users)
       .set({
@@ -97,6 +98,19 @@ export async function GET(request: NextRequest) {
         updatedAt: new Date(),
       })
       .where(eq(users.id, user[0].id));
+
+    // Also update team subscription data
+    await db
+      .update(teams)
+      .set({
+        stripeCustomerId: customerId,
+        stripeSubscriptionId: subscriptionId,
+        stripeProductId: productId,
+        planName: (plan.product as Stripe.Product).name,
+        subscriptionStatus: subscription.status,
+        updatedAt: new Date(),
+      })
+      .where(eq(teams.id, userTeam[0].teamId));
 
     await setSession(user[0]);
     return NextResponse.redirect(new URL('/dashboard', request.url));
