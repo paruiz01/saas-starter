@@ -10,13 +10,11 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
               <h1 className="text-4xl font-bold text-gray-900 tracking-tight sm:text-5xl md:text-6xl">
-                Build Your SaaS
-                <span className="block text-orange-500">Faster Than Ever</span>
+                Create games
+                <span className="block text-blue-500">Faster Than Ever</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
-                Launch your SaaS product in record time with our powerful,
-                ready-to-use template. Packed with modern technologies and
-                essential integrations.
+                Start making games today with essential tools and resources curated to jumpstart your game development journey.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left lg:mx-0">
                 <a
@@ -28,7 +26,7 @@ export default function HomePage() {
                     variant="outline"
                     className="text-lg rounded-full"
                   >
-                    Deploy your own
+                    Start your journey
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </a>
@@ -45,7 +43,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-3 lg:gap-8">
             <div>
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                 <svg viewBox="0 0 24 24" className="h-6 w-6">
                   <path
                     fill="currentColor"
@@ -55,41 +53,39 @@ export default function HomePage() {
               </div>
               <div className="mt-5">
                 <h2 className="text-lg font-medium text-gray-900">
-                  Next.js and React
+                  Unity and Unreal Engine
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Leverage the power of modern web technologies for optimal
+                  Leverage the power of modern game engine technologies for optimal
                   performance and developer experience.
                 </p>
               </div>
             </div>
 
             <div className="mt-10 lg:mt-0">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                 <Database className="h-6 w-6" />
               </div>
               <div className="mt-5">
                 <h2 className="text-lg font-medium text-gray-900">
-                  Postgres and Drizzle ORM
+                  Odin Inspector 
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Robust database solution with an intuitive ORM for efficient
-                  data management and scalability.
+                  Powerful, customized and user-friendly editor, without ever having to write a single line of custom editor code. 
                 </p>
               </div>
             </div>
 
             <div className="mt-10 lg:mt-0">
-              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-orange-500 text-white">
+              <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-500 text-white">
                 <CreditCard className="h-6 w-6" />
               </div>
               <div className="mt-5">
                 <h2 className="text-lg font-medium text-gray-900">
-                  Stripe Integration
+                  Cursor Integration
                 </h2>
                 <p className="mt-2 text-base text-gray-500">
-                  Seamless payment processing and subscription management with
-                  industry-leading Stripe integration.
+                Speed up your workflow by providing instant code suggestions, generating game logic snippets, and answering your programming questions in real time.
                 </p>
               </div>
             </div>
@@ -102,12 +98,12 @@ export default function HomePage() {
           <div className="lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-                Ready to launch your SaaS?
+                Ready to launch your game?
               </h2>
               <p className="mt-3 max-w-3xl text-lg text-gray-500">
-                Our template provides everything you need to get your SaaS up
-                and running quickly. Don't waste time on boilerplate - focus on
-                what makes your product unique.
+              Our blogs gives you all the essentials to start building your game fast. 
+              Skip the repetitive setup and dive straight into crafting the unique gameplay and features 
+              that make your game stand out.
               </p>
             </div>
             <div className="mt-8 lg:mt-0 flex justify-center lg:justify-end">

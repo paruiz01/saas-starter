@@ -51,6 +51,7 @@ async function seed() {
         email: email,
         passwordHash: passwordHash,
         role: "owner",
+        supabaseUserId: "00000000-0000-0000-0000-000000000000",
       },
     ])
     .returning();
