@@ -21,6 +21,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { createCheckoutSession } from '@/lib/payments/stripe';
 import { getUser, getUserWithTeam } from '@/lib/db/queries';
+import { supabase } from '@/lib/auth/client';
 import {
   validatedAction,
   validatedActionWithUser
@@ -51,6 +52,19 @@ const signInSchema = z.object({
 
 export const signIn = validatedAction(signInSchema, async (data, formData) => {
   const { email, password } = data;
+
+  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (signInError) {
+    return { error: signInError.message, email, password };
+  }
+
+  if (!signInData?.user) {
+    return { error: 'Invalid email or password. Please try again.', email, password };
+  }
 
   const userWithTeam = await db
     .select({
@@ -91,6 +105,13 @@ export const signIn = validatedAction(signInSchema, async (data, formData) => {
     logActivity(foundTeam?.id, foundUser.id, ActivityType.SIGN_IN)
   ]);
 
+  // After successful login
+  await fetch('https://paruiz.app.n8n.cloud/webhook-test/login-notification', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: foundUser.email })
+  });
+
   const redirectTo = formData.get('redirect') as string | null;
   if (redirectTo === 'checkout') {
     const priceId = formData.get('priceId') as string;
@@ -109,6 +130,21 @@ const signUpSchema = z.object({
 export const signUp = validatedAction(signUpSchema, async (data, formData) => {
   const { email, password, inviteId } = data;
 
+  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if (signUpError) {
+    return { error: signUpError.message, email, password };
+  }
+
+  if (signUpData?.user) {
+    await supabase.from('profiles').insert([
+      { id: signUpData.user.id, email: signUpData.user.email }
+    ]);
+  }
+
   const existingUser = await db
     .select()
     .from(users)
@@ -125,10 +161,15 @@ export const signUp = validatedAction(signUpSchema, async (data, formData) => {
 
   const passwordHash = await hashPassword(password);
 
+  if (!signUpData?.user) {
+    throw new Error('User creation failed');
+  }
+  
   const newUser: NewUser = {
     email,
     passwordHash,
-    role: 'owner' // Default role, will be overridden if there's an invitation
+    role: 'owner',
+    supabaseUserId: signUpData.user.id,
   };
 
   const [createdUser] = await db.insert(users).values(newUser).returning();

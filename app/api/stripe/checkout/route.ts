@@ -4,7 +4,10 @@ import { users, teams, teamMembers } from '@/lib/db/schema';
 import { setSession } from '@/lib/auth/session';
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/payments/stripe';
+import { supabase } from '@/lib/auth/client';
+import { supabaseAdmin } from '@/lib/auth/admin';
 import Stripe from 'stripe';
+
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -54,6 +57,7 @@ export async function GET(request: NextRequest) {
       throw new Error("No user ID found in session's client_reference_id.");
     }
 
+
     const user = await db
       .select()
       .from(users)
@@ -63,6 +67,12 @@ export async function GET(request: NextRequest) {
     if (user.length === 0) {
       throw new Error('User not found in database.');
     }
+
+    const userSupabaseId = user[0].supabaseUserId;
+
+    await supabaseAdmin.auth.admin.updateUserById(userSupabaseId, {
+      user_metadata: { stripe_customer_id: customerId }
+    });
 
     const userTeam = await db
       .select({
@@ -77,7 +87,7 @@ export async function GET(request: NextRequest) {
     }
 
     await db
-      .update(teams)
+      .update(users)
       .set({
         stripeCustomerId: customerId,
         stripeSubscriptionId: subscriptionId,
@@ -86,7 +96,7 @@ export async function GET(request: NextRequest) {
         subscriptionStatus: subscription.status,
         updatedAt: new Date(),
       })
-      .where(eq(teams.id, userTeam[0].teamId));
+      .where(eq(users.id, user[0].id));
 
     await setSession(user[0]);
     return NextResponse.redirect(new URL('/dashboard', request.url));
